@@ -1,0 +1,49 @@
+While taking the course, I kept getting kicked off of Google Colab and had issues with keeping the GPU resource accessible so I figured out the setup needed to run the notebooks in Miniconda and Jupyter.
+
+$ conda create --prefix ./env pandas numpy matplotlib scikit-learn jupyter seaborn tensorflow-hub tensorflow-gpu tensorflow-datasets pydot pydotplus python=3.7
+
+* After the initial install, you'll need to install/change some specific package versions
+
+** You must have the environment activated before installing these additional packages **
+
+$ conda install tensorflow-estimator=2.4.1
+$ conda install -c conda-forge google-auth=1.35.0
+$ conda install -c conda-forge numpy=1.19.5
+$ conda install -c conda-forge xgboost
+
+* These supposedly takes advantage of Intel chips
+
+$ conda install scikit-learn-intelex -c conda-forge
+$ conda install dpcpp_cpp_rt -c intel
+
+* I ended up not needing the following (tensorflow-probability) package since they changed the code during the video but I'll leave it here just in case it's needed in the future.
+
+$ conda install -c conda-forge tensorflow-probability=0.12.2
+
+
+
+... ONE-TIME LINUX THING ....
+
+* I saw a CUPTI_ERROR_NOT_INITIALIZED issue that comes up in one of the notebooks. This is done outside the conda environment and only needs to be done once.
+
+* In the /etc/modprobe.d/ directory:
+
+$ sudo touch nvidia-kernel-common.conf
+$ sudo gedit nvidia-kernel-common.conf
+
+* add the following line:
+
+options nvidia "NVreg_RestrictProfilingToAdminUsers=0
+
+* reboot the machine
+
+
+Notes: 
+
+1. While I swear I loaded the correct version of tensorflow-estimator (i.e., 2.4.1) somehow it got promotoed to 2.6.x. Maybe by a subsequent package install? I ended up getting an error on the first Transfer Learning notebook when I tried to import tensorflow, tensorflow_hub and tensorflow.keras. It looks like google-auth got overridden somehow too ... had to reinstall v1.35.0.
+
+
+
+
+
+
